@@ -11,15 +11,24 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DemoApplication extends SpringBootServletInitializer {
 
+    /**
+     * Required for deploying Spring Boot WAR to external Tomcat
+     */
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(DemoApplication.class);
     }
 
+    /**
+     * Used when running as a standalone application
+     */
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
     }
 
+    /**
+     * Simple test endpoint
+     */
     @GetMapping("/")
     public String home() {
         return "Hello from Spring Boot!";

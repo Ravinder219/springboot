@@ -1,0 +1,47 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Check out the code') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/Ravinder219/Jenkins-Zero-To-Hero.git'
+            }
+        }
+
+        stage('Compile') {
+            steps {
+                dir('spring-boot-demo') {
+                    sh 'mvn clean compile'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                dir('spring-boot-demo') {
+                    sh 'mvn test'
+                }
+            }
+            post {
+                always {
+                    junit 'spring-boot-demo/target/surefire-reports/*.xml'
+                }
+            }
+        }
+
+        stage('Package') {
+            steps {
+                dir('spring-boot-demo') {
+                    sh 'mvn package'
+                }
+            }
+            post {
+                success {
+                    archiveArtifacts 'spring-boot-demo/target/*.jar'
+                }
+            }
+        }
+    }
+}

@@ -33,4 +33,12 @@ public class DemoApplication extends SpringBootServletInitializer {
     public String home() {
         return "Hello from Spring Boot!";
     }
+
+    /**
+     * Another endpoint for testing (optional)
+     */
+    @GetMapping("/hello")
+    public String hello() {
+        return "Hello World endpoint!";
+    }
 }

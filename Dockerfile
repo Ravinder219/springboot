@@ -3,29 +3,28 @@
 # ============================
 FROM maven:3.9.6-eclipse-temurin-17 AS build
 
-# App directory create
 WORKDIR /app
 
-# pom.xml and source code copy
 COPY pom.xml .
 COPY src ./src
 
-# Application build (JAR generate)
 RUN mvn clean package -DskipTests
 
 
 # ============================
-# 2) Run Stage (Lightweight JRE)
+# 2) Runtime Stage (Tomcat)
 # ============================
-FROM eclipse-temurin:17-jre-alpine
+FROM tomcat:9.0-jdk17-temurin
 
-WORKDIR /app
+# Remove default Tomcat apps
+RUN rm -rf /usr/local/tomcat/webapps/*
 
-# JAR file copy (from build stage)
-COPY --from=build /app/target/*.jar app.jar
+# Copy WAR into Tomcat webapps
+COPY --from=build /app/target/springboot-demo-0.0.1-SNAPSHOT.war \
+     /usr/local/tomcat/webapps/ROOT.war
 
-# Expose port (Spring Boot default: 8080)
+# Expose Tomcat port
 EXPOSE 8080
 
-# Start application
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+# Start Tomcat
+CMD ["catalina.sh", "run"]

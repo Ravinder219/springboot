@@ -8,23 +8,21 @@ WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 
+# Build the JAR
 RUN mvn clean package -DskipTests
 
-
 # ============================
-# 2) Runtime Stage (Tomcat)
+# 2) Runtime Stage
 # ============================
-FROM tomcat:9.0-jdk17-temurin
+FROM eclipse-temurin:17-jdk-jammy
 
-# Remove default Tomcat apps
-RUN rm -rf /usr/local/tomcat/webapps/*
+WORKDIR /app
 
-# Copy WAR into Tomcat webapps
-COPY --from=build /app/target/springboot-demo-0.0.1-SNAPSHOT.war \
-     /usr/local/tomcat/webapps/ROOT.war
+# Copy the built JAR from build stage
+COPY --from=build /app/target/*.jar app.jar
 
-# Expose Tomcat port
+# Expose the Spring Boot port
 EXPOSE 8080
 
-# Start Tomcat
-CMD ["catalina.sh", "run"]
+# Run the Spring Boot application
+ENTRYPOINT ["java","-jar","app.jar"]

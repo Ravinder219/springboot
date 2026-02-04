@@ -20,9 +20,6 @@ public class DemoApplication extends SpringBootServletInitializer {
         SpringApplication.run(DemoApplication.class, args);
     }
 
-    /**
-     * Simple HTML page for browser
-     */
     @GetMapping("/")
     public String home() {
         return """
@@ -33,31 +30,11 @@ public class DemoApplication extends SpringBootServletInitializer {
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <title>Demo Spring Boot App</title>
                     <style>
-                        body {
-                            font-family: Arial, sans-serif;
-                            background-color: #f0f0f0;
-                            text-align: center;
-                            margin-top: 50px;
-                        }
-                        h1 {
-                            color: #333;
-                        }
-                        p {
-                            font-size: 18px;
-                            color: #555;
-                        }
-                        a.button {
-                            display: inline-block;
-                            padding: 10px 20px;
-                            margin-top: 20px;
-                            background-color: #4CAF50;
-                            color: white;
-                            text-decoration: none;
-                            border-radius: 5px;
-                        }
-                        a.button:hover {
-                            background-color: #45a049;
-                        }
+                        body { font-family: Arial, sans-serif; background-color: #f0f0f0; text-align: center; margin-top: 50px; }
+                        h1 { color: #333; }
+                        p { font-size: 18px; color: #555; }
+                        a.button { display: inline-block; padding: 10px 20px; margin-top: 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px; }
+                        a.button:hover { background-color: #45a049; }
                     </style>
                 </head>
                 <body>

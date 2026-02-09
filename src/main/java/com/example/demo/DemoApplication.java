@@ -4,8 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @SpringBootApplication
 @RestController
@@ -20,34 +19,98 @@ public class DemoApplication extends SpringBootServletInitializer {
         SpringApplication.run(DemoApplication.class, args);
     }
 
+    // ======================
+    // HOME PAGE
+    // ======================
     @GetMapping("/")
     public String home() {
         return """
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Demo Spring Boot App</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; background-color: #f0f0f0; text-align: center; margin-top: 50px; }
-                        h1 { color: #333; }
-                        p { font-size: 18px; color: #555; }
-                        a.button { display: inline-block; padding: 10px 20px; margin-top: 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px; }
-                        a.button:hover { background-color: #45a049; }
-                    </style>
-                </head>
-                <body>
-                    <h1>Welcome to Demo Spring Boot App!</h1>
-                    <p>This is a simple HTML page served by Spring Boot.</p>
-                    <a class="button" href="/hello">Go to Hello Endpoint</a>
-                </body>
-                </html>
-                """;
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Destion Technologies</title>
+            <style>
+                body { font-family: Arial; background: #f4f6f8; text-align: center; padding: 50px; }
+                h1 { color: #0b5ed7; }
+                p { font-size: 18px; }
+                .btn { padding: 12px 25px; background: #198754; color: white; text-decoration: none; border-radius: 6px; }
+                .btn:hover { background: #157347; }
+            </style>
+        </head>
+        <body>
+            <h1>Welcome to Destion Technologies</h1>
+            <p>We deliver enterprise-grade DevOps & Cloud solutions.</p>
+            <p>CI/CD | Docker | Kubernetes | AWS</p>
+            <a class="btn" href="/register">Register Now</a>
+        </body>
+        </html>
+        """;
     }
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "<h2>Hello World endpoint!</h2><p>This is another page.</p>";
+    // ======================
+    // REGISTRATION PAGE
+    // ======================
+    @GetMapping("/register")
+    public String register() {
+        return """
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>User Registration</title>
+            <style>
+                body { font-family: Arial; background: #eef2f7; padding: 40px; }
+                .container { max-width: 400px; margin: auto; background: white; padding: 25px; border-radius: 8px; }
+                h2 { text-align: center; color: #0b5ed7; }
+                input, button { width: 100%; padding: 10px; margin-top: 10px; }
+                button { background: #0b5ed7; color: white; border: none; border-radius: 4px; }
+                button:hover { background: #084298; }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h2>Register with Destion</h2>
+                <form action="/submit" method="post">
+                    <input type="text" name="name" placeholder="Full Name" required />
+                    <input type="email" name="email" placeholder="Email Address" required />
+                    <input type="text" name="company" placeholder="Company Name" required />
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </body>
+        </html>
+        """;
+    }
+
+    // ======================
+    // FORM SUBMIT
+    // ======================
+    @PostMapping("/submit")
+    public String submit(
+            @RequestParam String name,
+            @RequestParam String email,
+            @RequestParam String company) {
+
+        return """
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Registration Success</title>
+            <style>
+                body { font-family: Arial; background: #d1e7dd; text-align: center; padding: 60px; }
+                h1 { color: #0f5132; }
+                p { font-size: 18px; }
+                a { text-decoration: none; color: #0d6efd; }
+            </style>
+        </head>
+        <body>
+            <h1>Registration Successful 🎉</h1>
+            <p>Thank you <b>""" + name + """</b>!</p>
+            <p>Email: """ + email + """</p>
+            <p>Company: """ + company + """</p>
+            <br/>
+            <a href="/">Back to Home</a>
+        </body>
+        </html>
+        """;
     }
 }
